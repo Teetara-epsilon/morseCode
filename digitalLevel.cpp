@@ -6,7 +6,7 @@ extern int n;
 
 const digitalLevel HorL_PULL = LevelHigh;
 
-DigitalLevel(digitalLevel value){
+DigitalLevel::DigitalLevel(digitalLevel value){
     this -> value = value; 
     this -> timer = Timer();
     timer.set();
@@ -14,29 +14,29 @@ DigitalLevel(digitalLevel value){
         timer.start();
 }
 
-public:
-static DigitalLevel Create(){ return  DigitalLevel( HorL_PULL); }
 
-DigitalLevel Next(Voltage next_value, Totalling total){
-if(value == LevelHigh){
-    // 現在 LevelHigh なら
-    if( next_value.value < FALL_THRESHOLD ){
-    return  DigitalLevel(LevelLow);
-    }
-    return  *this;
-}
-else{
-    // 現在 LevelLow なら
-    if( next_value.value > RAISE_THRESHOLD ){
-    timer.stop();
-    total.totaltime += timer.GetElapsed();
-    total.n++;
+DigitalLevel DigitalLevel::Create(){ return  DigitalLevel( HorL_PULL); }
 
-    total.ShowAve();
-    return  DigitalLevel(LevelHigh);
+DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
+    if(value == LevelHigh){
+        // 現在 LevelHigh なら
+        if( next_value.value < FALL_THRESHOLD ){
+        return  DigitalLevel(LevelLow);
+        }
+        return  *this;
     }
-    return  *this;
+    else{
+        // 現在 LevelLow なら
+        if( next_value.value > RAISE_THRESHOLD ){
+        timer.stop();
+        total.totaltime += timer.GetElapsed();
+        total.n++;
+
+        total.Show();
+        return  DigitalLevel(LevelHigh);
+        }
+        return  *this;
+    }
 }
-}
-digitalLevel GetValue(){ return value; }
-unsigned long GetTime(){ return timer.GetElapsed(); }
+digitalLevel DigitalLevel::GetValue(){ return value; }
+unsigned long DigitalLevel::GetTime(){ return timer.GetElapsed(); }

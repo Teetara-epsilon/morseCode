@@ -23,7 +23,7 @@ class DigitalLevel{
   public:
   static DigitalLevel Create();
   
-  DigitalLevel Next(Voltage next_value, Totalling total);
+  DigitalLevel Next(Voltage next_value, Totalling& total);
   digitalLevel GetValue();
   unsigned long GetTime();
 };

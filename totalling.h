@@ -10,6 +10,13 @@ class Totalling{
         Serial.println("average time: ");
         Serial.println(totaltime/n);
     }
+    void Show(){
+        Serial.print("totaltime / average time: ");
+        Serial.print(totaltime);
+        Serial.print(" / ");
+        Serial.print(totaltime/n);
+        Serial.print("\n");
+    }
 };
 
 #endif
