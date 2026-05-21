@@ -4,9 +4,10 @@
 
 const int PIN_MORSE = A0;
 
-unsigned long time = 0;
 int n = 0;
 DigitalLevel currentLevel = DigitalLevel::Create();
+Totalling total = Totalling();
+
 void setup() {
   Serial.begin(9600);
 }
@@ -14,7 +15,7 @@ void setup() {
 void loop() {
   
   Voltage volt = Voltage((analogRead( PIN_MORSE ))); 
-  DigitalLevel next = currentLevel.Next(volt);
+  DigitalLevel next = currentLevel.Next(volt, total);
 
   currentLevel = next;
 }
