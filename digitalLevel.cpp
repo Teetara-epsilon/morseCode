@@ -29,7 +29,8 @@ DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
         // 現在 LevelLow なら
         if( next_value.value > RAISE_THRESHOLD ){
         timer.stop();
-        total.totaltime += timer.GetElapsed();
+        total.time = timer.GetElapsed();
+        total.totaltime += total.time;
         total.n++;
 
         total.Show();
