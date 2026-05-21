@@ -1,28 +1,26 @@
 
 const int PIN_MORSE = A0;
-const digitalLevel HorL_PULL = High;
+const digitalLevel HorL_PULL = LelelHigh;
 
+unsigned long time = 0;
+int n = 0;
 DigitalLevel currentLevel;
-Timer timer;
 void setup() {
   currentLevel = DigitalLevel::Create();
 
-  timer = Timer();
-  timer.set();
+  Serial.begin(9600);
 }
 
 void loop() {
   
-  Voltage volt = Voltage((PIN_MORSE)); 
-  currentLevel = currentLevel.Next(volt);
-
-  // トン の成立閾値を測定
-  if(currentLevel.GetValue() == Low)
-    timer.start();
-  if(timer.is_runnning){
-    if(currentLevel.GetValue() == High)
-      timer.stop();
+  Voltage volt = Voltage((analogRead( PIN_MORSE ))); 
+  DigitalLevel next = currentLevel.Next(volt);
+  if(currentLevel != next){
+    Serial.println("average time: ");
+    if( n== 0) Serial.println(0)
+    else Serial.println(time/n);
   }
+  currentLevel = next;
 }
 
 class Chart{
@@ -39,7 +37,7 @@ class Chart{
 };
 
 class Timer{
-  public: bool is_runnning =false;
+  bool is_runnning = false;
   unsigned long start_time = 0;
   unsigned long elapsed_time = 0;
   
@@ -53,7 +51,8 @@ class Timer{
     is_runnning = false;
     elapsed_time += millis() - start_time;
   }
-  unsigned long getCounter(){ return elapsed_time; }
+  unsigned long GetElapsed(){ return elapsed_time; }
+  bool IsRunnning(){ return is_runnning; }
 };
 class Voltage{
   public:
@@ -70,33 +69,45 @@ class Voltage{
 };
 
 enum digitalLevel{
-  Low,
-  High
+  LelelLow,
+  LelelHigh
 };
 class DigitalLevel{
   digitalLevel value;
+  Timer timer;
 
   const int RAISE_THRESHOLD = 600;
   const int FALL_THRESHOLD = 400;
   
-  DigitalLevel(digitalLevel value){ this -> value = value; }
+  DigitalLevel(digitalLevel value, Timer timer){
+      this -> value = value; 
+      this -> timer = timer;
+      timer.set();
+    }
 
   public:
-  static DigitalLevel Create(){ return  DigitalLevel( HorL_PULL ); }
+  static DigitalLevel Create(){ return  DigitalLevel( HorL_PULL, Timer() ); }
   
   DigitalLevel Next(Voltage next_value){
-    if(value == High){
-      // 現在 High なら
-      if( next_value.value < FALL_THRESHOLD )
-        return  DigitalLevel(Low);
-      return  DigitalLevel(High);
+    if(value == LelelHigh){
+      // 現在 LelelHigh なら
+      if( next_value.value < FALL_THRESHOLD ){
+        timer.start();
+        return  DigitalLevel(LelelLow, Timer());
+      }
+      return  *this;
     }
     else{
-      // 現在 Low なら
-      if( next_value.value > RAISE_THRESHOLD )
-        return  DigitalLevel(High);
-      return  DigitalLevel(Low);
+      // 現在 LelelLow なら
+      if( next_value.value > RAISE_THRESHOLD ){
+        timer.stop();
+        time += timer.GetElapsed();
+        n++;
+        return  DigitalLevel(LelelHigh, Timer());
+      }
+      return  *this;
     }
   }
   digitalLevel GetValue(){ return value; }
+  unsigned long GetTime(){ return timer.GetElapsed(); }
 };
