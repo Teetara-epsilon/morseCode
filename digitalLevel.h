@@ -14,11 +14,16 @@ enum digitalLevel{
 class DigitalLevel{
   digitalLevel value;
   Timer timer;
+  bool isInvalidKeyDown = false;
 
   static const int RAISE_THRESHOLD = 600;
   static const int FALL_THRESHOLD = 400;
+  static const unsigned long MIN_EMPTY_TIME = 1;
+  static const unsigned long MAX_KEY_DOWN_TIME = 1000;
+  static const unsigned long MIN_KEY_DOWN_TIME = 70;
   
   DigitalLevel(digitalLevel value);
+  bool IsInvalidPressTime(unsigned long time);
 
   public:
   static DigitalLevel Create();
