@@ -1,9 +1,6 @@
 #include "digitalLevel.h"
 #include <Arduino.h>
 
-extern unsigned long time;
-extern int n;
-
 const digitalLevel HorL_PULL = LevelHigh;
 
 DigitalLevel::DigitalLevel(digitalLevel value){
@@ -28,6 +25,7 @@ DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
         if( next_value.value > FALL_THRESHOLD )
             return *this;
         
+        edgeDetected = true;
         isInvalidKeyDown = false;
         timer.stop();
         total.time = timer.GetElapsed();
@@ -44,6 +42,7 @@ DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
         if( next_value.value < RAISE_THRESHOLD ) return *this;
         if(isInvalidKeyDown) return DigitalLevel(LevelHigh);
 
+        edgeDetected = true;
         timer.stop();
         total.time = timer.GetElapsed();
         if( IsInvalidPressTime(total.time) ) return DigitalLevel(LevelHigh);

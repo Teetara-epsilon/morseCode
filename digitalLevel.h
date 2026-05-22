@@ -14,6 +14,7 @@ enum digitalLevel{
 class DigitalLevel{
   digitalLevel value;
   Timer timer;
+  bool edgeDetected = false;
   bool isInvalidKeyDown = false;
 
   static const int RAISE_THRESHOLD = 600;
