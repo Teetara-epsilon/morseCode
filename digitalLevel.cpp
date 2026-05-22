@@ -56,3 +56,4 @@ DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
 }
 digitalLevel DigitalLevel::GetValue(){ return value; }
 unsigned long DigitalLevel::GetTime(){ return timer.GetElapsed(); }
+bool DigitalLevel::IsInvalid(){ return isInvalidKeyDown; }
