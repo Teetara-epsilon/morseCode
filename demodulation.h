@@ -69,6 +69,7 @@ class Demodulation{
         currentLevel = currentLevel.Next(volt, total);
 
         if( old.IsIvalid() ){ return Invalid; }
+        if( !old.IsEdged() ){ return Invalid; }
         if( testProgress < TEST_LENGTH ){ return Testing(old); }
 
         unsigned long time = old.GetTime();
