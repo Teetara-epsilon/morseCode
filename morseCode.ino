@@ -1,12 +1,11 @@
 #include "timer.h"
 #include "voltage.h"
 #include "digitalLevel.h"
+#include "demodulation.h"
 
 const int PIN_MORSE = A0;
 
-int n = 0;
-DigitalLevel currentLevel = DigitalLevel::Create();
-Totalling total = Totalling();
+Demodulation demodulation = Demodulation();
 
 void setup() {
   Serial.begin(9600);
@@ -14,10 +13,11 @@ void setup() {
 
 void loop() {
   
-  Voltage volt = Voltage((analogRead( PIN_MORSE ))); 
-  DigitalLevel next = currentLevel.Next(volt, total);
+  MorseElement signal = demodulation::Demodulate(analogRead( PIN_MORSE )); 
 
-  currentLevel = next;
+  Serial.print("Element: ");
+  Serial.print(signal);
+  Serial.print("\n");
 }
 
 class Chart{

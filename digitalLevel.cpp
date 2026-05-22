@@ -34,9 +34,9 @@ DigitalLevel DigitalLevel::Next(Voltage next_value, Totalling& total){
         if( total.time < MIN_EMPTY_TIME)
             isInvalidKeyDown = true;
     
-        total.totaltime += total.time;
-        total.n++;
-        total.Show();
+        // total.totaltime += total.time;
+        // total.n++;
+        // total.Show();
         return DigitalLevel(LevelLow);
     }
     else{
