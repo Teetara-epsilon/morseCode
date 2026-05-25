@@ -1,6 +1,6 @@
 #include "morseDecoder.h"
 
-char MorseDecoder::Decode(MorseElement element){
+MorseContext MorseDecoder::Decode(MorseElement element){
     static char pattern[7];   // ".-.-.-" まで入るサイズ。アルファベットだけなら4でも足りる
     static int patternLength = 0;
 
@@ -19,7 +19,7 @@ char MorseDecoder::Decode(MorseElement element){
 
     auto dequeue = [&]() -> MorseContext {
         if(queueCount == 0){
-            return MorseContext;   // まだ出力文字なし
+            return MorseContext();   // まだ出力文字なし
         }
 
         MorseContext ctx = outputQueue[queueHead];
@@ -53,7 +53,7 @@ char MorseDecoder::Decode(MorseElement element){
         if(patternLength > 0){
             pattern[patternLength] = '\0';
 
-            char decodeChar = DecodePattern(pattern);
+            char decodedChar = DecodePattern(pattern);
             enqueue(MorseContext(decodedChar, String(pattern)));
             
             patternLength = 0;
@@ -63,7 +63,7 @@ char MorseDecoder::Decode(MorseElement element){
         if(patternLength > 0){
             pattern[patternLength] = '_\0';
             char decodedChar = DecodePattern(pattern);
-            enqueue(MorseContext(demodedChar, String(pattern)));
+            enqueue(MorseContext(decodedChar, String(pattern)));
             patternLength = 0;
         }
 

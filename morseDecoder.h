@@ -15,7 +15,7 @@ public:
         str = "";
     }
     
-    MorseContext(char nextChar, Strint morseSignal){
+    MorseContext(char nextChar, String morseSignal){
         c = nextChar;
         str = morseSignal;
     }
@@ -24,7 +24,7 @@ public:
         Serial.print(c);
     }
     void ShowMorseSignal(){
-        Serial.print("MorseSignal: ");
+        Serial.print("  MorseSignal: ");
         Serial.print(str);
     }
 

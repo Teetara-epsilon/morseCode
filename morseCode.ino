@@ -15,8 +15,8 @@ void loop() {
   if( signal == Invalid ){ return; }
 
   MorseContext ctx = MorseDecoder::Decode(signal);
-  if(context.HasChar()){ return; }
-  
+  if(!ctx.HasChar()){ return; }
+
   ctx.ShowChar();
   ctx.ShowMorseSignal();
   Serial.println();
