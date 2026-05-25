@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   
-  MorseElement signal = demodulation::Demodulate(analogRead( PIN_MORSE )); 
+  MorseElement signal = demodulation.Demodulate(analogRead( PIN_MORSE )); 
 
   if( signal == Invalid ){ return; }
   Serial.print("Element: ");

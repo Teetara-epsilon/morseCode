@@ -65,25 +65,24 @@ class Demodulation{
     public:
     MorseElement Demodulate(int analogValue){
         Voltage volt = Voltage(analogValue); 
-        DigitalLevel old = currentLevel;
-        currentLevel = currentLevel.Next(volt, total);
+        currentLevel.Next(volt, total);
 
-        if( old.IsIvalid() ){ return Invalid; }
-        if( !old.IsEdged() ){ return Invalid; }
-        if( testProgress < TEST_LENGTH ){ return Testing(old); }
+        if( currentLevel.IsInvalid() ){ return Invalid; }
+        if( !currentLevel.IsEdged() ){ return Invalid; }
+        //if( testProgress < TEST_LENGTH ){ return Testing(currentLevel); }
 
-        unsigned long time = old.GetTime();
+        unsigned long time = currentLevel.GetTime();
         unsigned long minUnit = MIN_UNIT_ERROR_RATE * unitTime;
         if( time < DahTime * minUnit){
-            if( old.GetValue() == LevelHigh ){ return IntraGap; }
+            if( currentLevel.GetValue() == LevelLow ){ return IntraGap; }
             else{ return Dit; }
         }
         else if( time < WGTime * minUnit){
-            if( old.GetValue() == LevelHigh ){ return LetterGap; }
+            if( currentLevel.GetValue() == LevelLow ){ return LetterGap; }
             else{ return Dah; }
         }
         else{
-            if( old.GetValue() == LevelLow ){ return WordGap; }
+            if( currentLevel.GetValue() == LevelLow ){ return WordGap; }
         }
         return Invalid;
     }

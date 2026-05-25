@@ -7,9 +7,11 @@ class Timer{
   bool is_runnning = false;
   unsigned long start_time = 0;
   unsigned long elapsed_time = 0;
+  unsigned long previous_time = 0;
   
   public:
   void set(){ 
+    previous_time = elapsed_time;
     elapsed_time = 0; 
     is_runnning = 0; 
   }
@@ -26,7 +28,7 @@ class Timer{
     }
   }
 
-  unsigned long GetElapsed(){ return elapsed_time; }
+  unsigned long GetElapsed(){ return previous_time; }
   
   bool IsRunnning(){ return is_runnning; }
 };
