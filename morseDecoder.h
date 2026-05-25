@@ -3,6 +3,7 @@
 
 #include "demodulation.h"
 #include <string.h>
+#include "oled.h"
 #include <Arduino.h>
 
 class MorseContext{
@@ -19,13 +20,15 @@ public:
         c = nextChar;
         str = morseSignal;
     }
-    void ShowChar(){
+    void ShowChar(Oled& oled){
         Serial.print("char: ");
         Serial.print(c);
+        oled.PrintChar(c);
     }
-    void ShowMorseSignal(){
+    void ShowMorseSignal(Oled& oled){
         Serial.print("  MorseSignal: ");
         Serial.print(str);
+        oled.PrintMorseSignal(str);
     }
 
     bool HasChar(){

@@ -1,12 +1,15 @@
 #include "demodulation.h"
 #include "morseDecoder.h"
+#include "oled.h"
 
 const int PIN_MORSE = A0;
 
 Demodulation demodulation = Demodulation();
+Oled oled = Oled();
 
 void setup() {
   Serial.begin(9600);
+  oled.Begin();
 }
 
 void loop() {
@@ -17,8 +20,8 @@ void loop() {
   MorseContext ctx = MorseDecoder::Decode(signal);
   if(!ctx.HasChar()){ return; }
 
-  ctx.ShowChar();
-  ctx.ShowMorseSignal();
+  ctx.ShowChar(oled);
+  ctx.ShowMorseSignal(oled);
   Serial.println();
 }
 
