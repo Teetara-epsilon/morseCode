@@ -14,7 +14,7 @@ enum MorseElement{
 };
 
 // 誤差許容割合値
-const float MIN_UNIT_ERROR_RATE = 0.8;
+const float MIN_UNIT_ERROR_RATE = 0.7;
 
 // V
 const MorseElement TEST[] = {
@@ -69,7 +69,7 @@ class Demodulation{
 
         if( currentLevel.IsInvalid() ){ return Invalid; }
         if( !currentLevel.IsEdged() ){ return Invalid; }
-        //if( testProgress < TEST_LENGTH ){ return Testing(currentLevel); }
+        if( testProgress < TEST_LENGTH ){ return Testing(currentLevel); }
 
         unsigned long time = currentLevel.GetTime();
         unsigned long minUnit = MIN_UNIT_ERROR_RATE * unitTime;

@@ -1,5 +1,4 @@
 #include "digitalLevel.h"
-#include <Arduino.h>
 
 const digitalLevel HorL_PULL = LevelHigh;
 
@@ -26,7 +25,6 @@ void DigitalLevel::Next(Voltage next_value, Totalling& total){
             edgeDetected = false;
             return;
         }
-        Serial.println("Falldwon");
         
         value = LevelLow;
         edgeDetected = true;
@@ -43,7 +41,6 @@ void DigitalLevel::Next(Voltage next_value, Totalling& total){
             edgeDetected = false;
             return;
         }
-        Serial.println("Raiseup");
         
         value = LevelHigh;
         edgeDetected = true;

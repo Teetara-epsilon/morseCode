@@ -1,7 +1,5 @@
-#include "timer.h"
-#include "voltage.h"
-#include "digitalLevel.h"
 #include "demodulation.h"
+#include "morseDecoder.h"
 
 const int PIN_MORSE = A0;
 
@@ -14,11 +12,14 @@ void setup() {
 void loop() {
   
   MorseElement signal = demodulation.Demodulate(analogRead( PIN_MORSE )); 
-
   if( signal == Invalid ){ return; }
-  Serial.print("Element: ");
-  Serial.print(signal);
-  Serial.print("\n");
+
+  MorseContext ctx = MorseDecoder::Decode(signal);
+  if(context.HasChar()){ return; }
+  
+  ctx.ShowChar();
+  ctx.ShowMorseSignal();
+  Serial.println();
 }
 
 class Chart{

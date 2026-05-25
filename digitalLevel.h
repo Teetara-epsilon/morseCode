@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "voltage.h"
 #include "totalling.h"
+#include <Arduino.h>
 
 
 enum digitalLevel{
